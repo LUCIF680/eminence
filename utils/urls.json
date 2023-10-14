@@ -1,0 +1,4 @@
+{
+    "base_url" : "http://localhost:3000/",
+    "verify_email" : "http://localhost:3000/users/verify-email"
+}

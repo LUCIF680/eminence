@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const createError = require("http-errors");
 const { joiPasswordExtendCore } = require("joi-password");
 const passport = require("passport");
 const errorHandler = require("express-async-handler");
@@ -38,9 +37,13 @@ router.post(
     const user = new User({ username, password });
     await user.save();
 
-    const accessToken = jwt.sign({ sub: user }, process.env.AUTH_KEY, {
-      expiresIn: 84000,
-    });
+    const accessToken = jwt.sign(
+      { sub: { username: user.username } },
+      process.env.AUTH_KEY,
+      {
+        expiresIn: 84000,
+      }
+    );
     return res.status(201).json({ access_token: accessToken });
   })
 );
@@ -53,7 +56,9 @@ router.post(
     // eslint-disable-next-line no-unused-vars
     passport.authenticate("local", { session: false }, (err, user, _info) => {
       if (err || !user) {
-        next(createError(400, locals.error_invalid_credentials));
+        return res
+          .status(401)
+          .json({ message: locals.error_invalid_credentials });
       }
 
       req.login(user, { session: false }, (err) => {
@@ -69,12 +74,17 @@ router.post(
   })
 );
 
-router.get("/", (req, res, next) => {
-  // eslint-disable-next-line no-unused-vars
-  passport.authenticate("jwt", { session: false }, (err, user, _info) => {
-    return res.json({ username: user.username, id: user._id });
-  })(req, res, next);
-});
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  validate.isLogout,
+  (req, res, next) => {
+    // eslint-disable-next-line no-unused-vars
+    passport.authenticate("jwt", { session: false }, (err, user, _info) => {
+      return res.json({ username: user.username, id: user._id });
+    })(req, res, next);
+  }
+);
 
 router.put(
   "/logout",

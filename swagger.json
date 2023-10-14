@@ -1,0 +1,227 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation",
+    "description": "API documentation for your Express application"
+  },
+  "paths": {
+    "/product/group/{group}": {
+      "get": {
+        "summary": "Get products by group",
+        "description": "Retrieve products by group name",
+        "parameters": [
+          {
+            "name": "group",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The name of the group to filter products"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "Bearer YOUR_ACCESS_TOKEN",
+            "description": "Bearer token for authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "summary": "Get product by ID",
+        "description": "Retrieve a product by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the product to retrieve"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "Bearer YOUR_ACCESS_TOKEN",
+            "description": "Bearer token for authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "summary": "Get user information",
+        "description": "Retrieve user information",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "Bearer YOUR_ACCESS_TOKEN",
+            "description": "Bearer token for authentication"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "put": {
+        "summary": "Logout user",
+        "description": "Logout the user and invalidate the token",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "default": "Bearer YOUR_ACCESS_TOKEN",
+            "description": "Bearer token for authentication"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Logout successful"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid token"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "Register a new user",
+        "description": "Create a new user account",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User registration successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Authenticate a user and generate an access token",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

@@ -21,8 +21,8 @@ schema.id = joi.object({
 router.get(
   "/group/:group",
   validate.joi(schema.group, "params"),
-  validate.isLogout,
   passport.authenticate("jwt", { session: false }),
+  validate.isLogout,
   errorHandler(async (req, res) => {
     // Should implement cache here to save the response and use it later
     const response = await axios.get("https://dummyjson.com/products");
@@ -35,8 +35,8 @@ router.get(
 router.get(
   "/:id",
   validate.joi(schema.id, "params"),
-  validate.isLogout,
   passport.authenticate("jwt", { session: false }),
+  validate.isLogout,
   errorHandler(async (req, res) => {
     // for example here we should use redis cache data for dummyjson
     const response = await axios.get("https://dummyjson.com/products");
